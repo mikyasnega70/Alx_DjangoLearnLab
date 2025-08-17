@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c4++*non+4uz9pqeu$@uc2+gr0$^elfptv$u(tq%5vyb*4g2wl'
+SECRET_KEY = 'django-insecure-jx7plq2iln_6v0%lr7p))#7b-egck#-yf8wjg#wiv^-&*yzo6m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -130,3 +130,4 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ]
 }
+

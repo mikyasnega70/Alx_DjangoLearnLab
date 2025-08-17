@@ -18,7 +18,6 @@
 - The `BookSerializer` includes validation to ensure `publication_year` is not in the future.
 - `perform_create()` method can be overridden to log or customize save behavior.
 
-
 ## API Query Parameters
 
 ### 🔎 Filtering

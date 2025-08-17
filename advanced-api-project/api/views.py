@@ -1,15 +1,23 @@
 from django.shortcuts import render
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from .serializers import BookSerializer
 from datetime import datetime
 
+# BookListView: Handles GET requests to list all books
+# BookDetailView: Handles GET requests for a specific book by ID
+# BookCreateView: Handles POST requests to create a book (requires auth)
+# BookUpdateView: Handles PUT/PATCH requests to update a book (requires auth)
+# BookDeleteView: Handles DELETE requests to delete a book (requires auth)
+
 # Create your views here.
 
-# ListView: Retrieve all books (GET only)
-# BookListView: Handles GET requests to list all books
+# BookListView:
+# - Supports filtering by title, author ID, and publication year.
+# - Allows searching by title or author's name.
+# - Supports ordering by title or publication year (ascending or descending).
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -29,7 +37,6 @@ class BookListView(generics.ListAPIView):
 
 
 # DetailView: Retrieve a single book by ID (GET only)
-# BookDetailView: Handles GET requests for a specific book by ID
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -37,15 +44,17 @@ class BookDetailView(generics.RetrieveAPIView):
 
 
 # CreateView: Add a new book (POST)
-# BookCreateView: Handles POST requests to create a book (requires auth)
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]  # Authenticated users only
-
+    
+    def perform_create(self, serializer):
+        # Add extra logic if needed (e.g., log creation)
+        print("Creating a book:", serializer.validated_data)
+        serializer.save()
 
 # UpdateView: Modify an existing book (PUT/PATCH)
-# BookUpdateView: Handles PUT/PATCH requests to update a book (requires auth)
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -53,7 +62,6 @@ class BookUpdateView(generics.UpdateAPIView):
 
 
 # DeleteView: Remove a book (DELETE)
-# BookDeleteView: Handles DELETE requests to delete a book (requires auth)
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer

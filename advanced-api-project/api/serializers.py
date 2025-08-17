@@ -2,6 +2,12 @@ from rest_framework import serializers
 from .models import Author, Book
 from datetime import datetime
 
+"""
+Serializers:
+- BookSerializer: Serializes Book model and validates publication year.
+- AuthorSerializer: Serializes Author and includes a nested list of books written by the author.
+Nesting: BookSerializer is nested inside AuthorSerializer using the `books` related name.
+"""
 # Serializer for the Book model
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
