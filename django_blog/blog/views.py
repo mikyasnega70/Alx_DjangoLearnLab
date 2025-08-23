@@ -120,6 +120,15 @@ def search_posts(request):
 
     return render(request, 'blog/search_results.html', {'query': query, 'results': results})
 
-def posts_by_tag(request, tag):
-    posts = Post.objects.filter(tags__name__iexact=tag)
-    return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag': tag})
+class PostsByTagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__name__iexact=self.kwargs['tag'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = self.kwargs['tag']
+        return context
