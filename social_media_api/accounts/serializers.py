@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
-
+from posts.models import Post
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -26,3 +26,10 @@ class LoginSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Invalid credentials")
+
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+
+    class Meta:
+        model = Post
+        fields = ['id', 'author', 'content', 'created_at']

@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from rest_framework.authtoken.models import Token
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, PostSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
+from posts.models import Post
+
 
 # Create your views here.
 class RegisterView(generics.GenericAPIView):
@@ -64,3 +66,14 @@ class UnfollowUserView(generics.GenericAPIView):
         target_user = get_object_or_404(users, id=user_id)
         request.user.following.remove(target_user)
         return Response({"message": f"You have unfollowed {target_user.username}."}, status=200)
+
+class FeedView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get(self, request):
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data, status=200)
+
