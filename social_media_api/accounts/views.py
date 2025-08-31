@@ -67,13 +67,3 @@ class UnfollowUserView(generics.GenericAPIView):
         request.user.following.remove(target_user)
         return Response({"message": f"You have unfollowed {target_user.username}."}, status=200)
 
-class FeedView(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = PostSerializer
-
-    def get(self, request):
-        following_users = request.user.following.all()
-        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
-        serializer = self.get_serializer(posts, many=True)
-        return Response(serializer.data, status=200)
-

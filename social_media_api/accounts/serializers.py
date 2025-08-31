@@ -27,9 +27,3 @@ class LoginSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("Invalid credentials")
 
-class PostSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()
-
-    class Meta:
-        model = Post
-        fields = ['id', 'author', 'content', 'created_at']
