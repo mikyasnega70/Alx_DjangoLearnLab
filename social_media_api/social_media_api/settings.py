@@ -81,10 +81,18 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    #'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / config('DB_NAME', default='db.sqlite3'),
+        'USER': config('DB_USER', default='sqlite_user'),
+        'PASSWORD': config('DB_PASSWORD', default='sqlite_pass'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),  # Doesn't matter for SQLite
+    }
 }
 
-PORT = config('PORT', default=8000, cast=int)
+#PORT = config('PORT', default=8000, cast=int)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
